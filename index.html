@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en" class="intro-pending">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE MULTIVERSE: RISE OF HEROES | GFG Bennett University</title>
+  <meta name="description" content="Official Marvel-themed 24-hour Hackathon & Tech Championship organized by GeeksForGeeks Student Chapter, Bennett University. 4 Tracks, ₹50,000+ Prizes, Industry Mentorship.">
+  <meta name="keywords" content="GFG, Bennett University, Marvel Hackathon, Coding Championship, GeeksForGeeks Student Chapter, Greater Noida, Web3, AI, DSA">
+
+  <!-- OpenGraph / Social -->
+  <meta property="og:title" content="THE MULTIVERSE: RISE OF HEROES — GFG Bennett University">
+  <meta property="og:description" content="Assemble your squad for Bennett University's flagship Marvel-themed 24-hour hackathon.">
+  <meta property="og:type" content="website">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css?v=3.0">
+  <link rel="stylesheet" href="css/cinematic.css?v=4.0">
+  <link rel="stylesheet" href="css/components.css?v=3.0">
+  <link rel="stylesheet" href="css/polish.css?v=1.0">
+
+  <script>
+    try {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      if (localStorage.getItem('gfg_intro_seen') === 'true') {
+        document.documentElement.classList.remove('intro-pending');
+        document.documentElement.classList.add('intro-seen');
+      }
+    } catch {}
+  </script>
+
+  <!-- GSAP, ScrollTrigger, Lucide Icons, Confetti -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <section id="opening-intro" aria-label="Event opening sequence">
+    <div class="opening-atmosphere" aria-hidden="true"></div>
+    <img class="opening-hammer-tease" src="ezgif-50c1e9bd8ff6ca08-jpg/ezgif-frame-120.jpg" alt="" aria-hidden="true">
+    <div class="opening-lightning" aria-hidden="true"><span></span></div>
+
+    <div class="opening-brand" aria-label="GeeksforGeeks Student Chapter times Bennett University">
+      <span>GEEKSFORGEEKS STUDENT CHAPTER</span>
+      <span class="opening-brand-cross">×</span>
+      <span>BENNETT UNIVERSITY</span>
+    </div>
+
+    <div class="opening-presents" aria-hidden="true">PRESENTS</div>
+
+    <button class="opening-skip" id="skip-sequence-btn" type="button" disabled>
+      SKIP INTRO
+    </button>
+  </section>
+
+  <!-- Film Grain Overlay -->
+  <div class="film-grain"></div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- Top Fixed HUD Controls -->
+  <div class="hud-controls-top">
+    <button class="hud-btn" id="sound-toggle-btn" aria-label="Toggle Sound">
+      <svg id="sound-icon" viewBox="0 0 24 24">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+        <line x1="23" y1="9" x2="17" y2="15"/>
+        <line x1="17" y1="9" x2="23" y2="15"/>
+      </svg>
+      <span id="sound-label">AUDIO: OFF</span>
+    </button>
+  </div>
+
+  <!-- 1. Sticky Scrollytelling Thunder Hammer Sequence (500vh) -->
+  <section id="cinematic-sequence">
+    <div class="sticky-viewport">
+      <div class="intro-brand-lockup" aria-label="GeeksforGeeks Student Chapter at Bennett University">
+        <span>GEEKSFORGEEKS STUDENT CHAPTER</span>
+        <span class="intro-brand-cross">×</span>
+        <span>BENNETT UNIVERSITY</span>
+      </div>
+
+      <div id="canvas-wrapper">
+        <img id="hammer-fallback-img" src="ezgif-50c1e9bd8ff6ca08-jpg/ezgif-frame-001.jpg" alt="Thor Thunder Hammer">
+        <canvas id="hammer-canvas"></canvas>
+        <canvas id="lightning-canvas"></canvas>
+        <div class="cinematic-vignette"></div>
+        <div id="thunder-flash"></div>
+      </div>
+
+      <!-- 7-Phase Typography Overlays -->
+      <div class="phase-text-container">
+        <!-- Phase 1 (0-15%) -->
+        <div class="phase-text" id="phase-text-1">
+          <h2 class="phase-heading">ONE UNIVERSE.</h2>
+          <p class="phase-sub">A NEW STORY BEGINS</p>
+        </div>
+
+        <!-- Phase 2 (15-32%) -->
+        <div class="phase-text" id="phase-text-2">
+          <h2 class="phase-heading">MANY HEROES.</h2>
+          <p class="phase-sub">EVERY CHOICE SHAPES WHAT COMES NEXT</p>
+        </div>
+
+        <!-- Phase 3 (33-52%) -->
+        <div class="phase-text" id="phase-text-3">
+          <h2 class="phase-heading">WORLDS COLLIDE.</h2>
+          <p class="phase-sub">THE MULTIVERSE IS IN PLAY</p>
+        </div>
+
+        <!-- Phase 4 (53-70%) -->
+        <div class="phase-text" id="phase-text-4">
+          <h2 class="phase-heading">YOUR LEGEND STARTS HERE.</h2>
+          <p class="phase-sub">STEP INTO THE STORY</p>
+        </div>
+      </div>
+
+      <!-- Bottom HUD Scroll Indicator -->
+      <div id="scroll-indicator-hud">
+        <span class="scroll-hud-text">ENTER THE MULTIVERSE</span>
+        <div class="scroll-hud-mouse">
+          <div class="scroll-hud-wheel"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Main Event Website -->
+  <main id="main-content">
+    <canvas id="background-lightning" aria-hidden="true"></canvas>
+    <canvas id="hammer-model-canvas" aria-hidden="true"></canvas>
+
+    <!-- Fixed Glass Navbar -->
+    <nav id="main-nav">
+      <div class="multiverse-container nav-container">
+        <a href="#event-hero" class="nav-brand">
+          <div class="brand-icon">
+            <i data-lucide="zap"></i>
+          </div>
+          <div class="brand-info">
+            <span class="brand-title">GFG STUDENT CHAPTER</span>
+            <span class="brand-sub">BENNETT UNIVERSITY</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#about" class="nav-link">ABOUT</a></li>
+          <li><a href="#tracks" class="nav-link">TRACKS</a></li>
+          <li><a href="#highlights" class="nav-link">HIGHLIGHTS</a></li>
+          <li><a href="#schedule" class="nav-link">SCHEDULE</a></li>
+          <li><a href="#intel" class="nav-link">DETAILS</a></li>
+          <li><a href="#faqs" class="nav-link">FAQS</a></li>
+        </ul>
+
+        <button class="btn-primary nav-cta" data-open-modal="register">
+          <span>REGISTER NOW</span>
+        </button>
+
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-drawer">
+      <a href="#about" class="mobile-nav-link">ABOUT</a>
+      <a href="#tracks" class="mobile-nav-link">TRACKS</a>
+      <a href="#highlights" class="mobile-nav-link">HIGHLIGHTS</a>
+      <a href="#schedule" class="mobile-nav-link">SCHEDULE</a>
+      <a href="#intel" class="mobile-nav-link">DETAILS</a>
+      <a href="#faqs" class="mobile-nav-link">FAQS</a>
+      <button class="btn-primary" data-open-modal="register" style="margin-top: 20px;">
+        <span>REGISTER NOW (FREE)</span>
+      </button>
+    </div>
+
+    <!-- Hero Event Reveal Section -->
+    <section id="event-hero">
+      <div class="multiverse-container">
+        <div class="hero-content">
+          
+          <div class="hero-badge-wrap reveal-up">
+            <div class="section-tag">
+              <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+              <span>GFG STUDENT CHAPTER • BENNETT UNIVERSITY PRESENTS</span>
+            </div>
+          </div>
+
+          <h1 class="hero-main-title reveal-up">
+            THE MULTIVERSE
+            <span class="hero-subtitle-glow">RISE OF HEROES</span>
+          </h1>
+
+          <p class="hero-desc reveal-up">
+            Join Bennett University's 24-hour Marvel-themed hackathon. Build, compete, and claim your glory.
+          </p>
+
+          <div class="event-facts reveal-up" aria-label="Event information">
+            <div><span>DATE</span><strong>OCT 24–25, 2026</strong></div>
+            <div><span>CHECK-IN</span><strong>DAY 1 · 9:30 AM</strong></div>
+            <div><span>VENUE</span><strong>BENNETT UNIVERSITY</strong></div>
+              <div><span>ELIGIBILITY</span><strong>UG / PG / SCHOOL</strong></div>
+          </div>
+
+          <!-- Live Real-Time Countdown HUD -->
+          <span class="countdown-eyebrow reveal-up">EVENT BEGINS IN</span>
+          <div class="countdown-box reveal-up">
+            <div class="cd-unit">
+              <span class="cd-val" id="cd-days">00</span>
+              <span class="cd-label">DAYS</span>
+            </div>
+            <div class="cd-unit">
+              <span class="cd-val" id="cd-hours">00</span>
+              <span class="cd-label">HOURS</span>
+            </div>
+            <div class="cd-unit">
+              <span class="cd-val" id="cd-mins">00</span>
+              <span class="cd-label">MINUTES</span>
+            </div>
+            <div class="cd-unit">
+              <span class="cd-val" id="cd-secs">00</span>
+              <span class="cd-label">SECONDS</span>
+            </div>
+          </div>
+
+          <!-- Dual Action CTAs -->
+          <div class="hero-actions reveal-up">
+            <button class="btn-primary" data-open-modal="register">
+              <i data-lucide="crosshair"></i>
+              <span>REGISTER NOW (FREE)</span>
+            </button>
+            <a href="#schedule" class="btn-secondary">
+              <i data-lucide="calendar"></i>
+              <span>VIEW SCHEDULE</span>
+            </a>
+          </div>
+
+          <!-- Stats Ribbon -->
+          <div class="hero-stats-ribbon reveal-up">
+            <div class="stat-item">
+              <span class="stat-number gradient-text-cyan">500+</span>
+              <span class="stat-label">PARTICIPANTS</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number gradient-text-cyan">₹50,000+</span>
+              <span class="stat-label">PRIZE POOL</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number gradient-text-cyan">24 HOURS</span>
+              <span class="stat-label">NON-STOP HACKATHON</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number gradient-text-cyan">4 TRACKS</span>
+              <span class="stat-label">SPECIALIZED DOMAINS</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="hammer-showcase" data-hammer-stage>
+      <span class="hammer-stage-anchor" aria-hidden="true"></span>
+      <div class="multiverse-container hammer-showcase-content">
+        <div class="hammer-showcase-copy">
+          <span class="hammer-stage-index">ARTIFACT MOMENT 01 / SIGNAL</span>
+          <h2>A NEW FORCE ENTERS THE STORY.</h2>
+          <button class="hammer-spin-btn" type="button" data-hammer-spin>
+            <i data-lucide="rotate-cw" aria-hidden="true"></i>
+            <span>SPIN THE HAMMER</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: ABOUT THE EVENT -->
+    <section id="about">
+      <div class="multiverse-container">
+        <div class="section-header">
+          <div class="section-tag">
+            <i data-lucide="info" style="width: 14px; height: 14px;"></i>
+            <span>ABOUT THE EVENT</span>
+          </div>
+          <h2 class="section-title">THE FLAGSHIP CHAMPIONSHIP</h2>
+          <p class="section-desc">
+            Organized by the GeeksForGeeks Student Chapter at Bennett University, The Multiverse brings together the brightest coders, designers, and innovators.
+          </p>
+        </div>
+
+        <div class="mission-grid">
+          <div class="mission-left">
+            <p class="mission-lore">
+              Whether you are an algorithmic wizard cracking complex competitive programming problems, a full-stack engineer building scalable web applications, an AI researcher creating generative pipelines, or a UI/UX visionary crafting beautiful interfaces — this is your arena.
+            </p>
+            <p class="mission-lore" style="color: rgba(255,255,255,0.75);">
+              Participants will receive 1-on-1 mentorship from seasoned industry engineers, access to high-speed campus infrastructure, complimentary meals, and opportunities to win cash prizes and exclusive GFG swags.
+            </p>
+
+            <div class="mission-pillars">
+              <div class="pillar-card">
+                <i data-lucide="code-2" class="pillar-icon"></i>
+                <h3 class="pillar-title">Competitive Coding</h3>
+                <p class="pillar-desc">Test your DSA, dynamic programming, and algorithmic problem-solving speed.</p>
+              </div>
+              <div class="pillar-card">
+                <i data-lucide="laptop" class="pillar-icon"></i>
+                <h3 class="pillar-title">24h Hackathon</h3>
+                <p class="pillar-desc">Build and deploy full-stack software and hardware prototypes from scratch.</p>
+              </div>
+              <div class="pillar-card">
+                <i data-lucide="bot" class="pillar-icon"></i>
+                <h3 class="pillar-title">AI & Smart Tech</h3>
+                <p class="pillar-desc">Harness LLMs, neural networks, and modern APIs to solve real-world problems.</p>
+              </div>
+              <div class="pillar-card">
+                <i data-lucide="award" class="pillar-icon"></i>
+                <h3 class="pillar-title">Prizes & Swag</h3>
+                <p class="pillar-desc">Win cash prizes, official GFG merchandise, verified certificates, and goodies.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mission-right">
+            <div class="mission-terminal">
+              <div class="terminal-header">
+                <div class="terminal-dots">
+                  <span class="t-dot t-dot-red"></span>
+                  <span class="t-dot t-dot-yellow"></span>
+                  <span class="t-dot t-dot-green"></span>
+                </div>
+                <span class="terminal-title">EVENT HIGHLIGHTS // GFG BENNETT</span>
+              </div>
+              <div class="terminal-body">
+                <p><span class="t-prompt">✓</span> <strong>Host:</strong> GFG Student Chapter Bennett University</p>
+                <p><span class="t-prompt">✓</span> <strong>Format:</strong> 24-Hour In-Person Hackathon + Coding Duels</p>
+                <p><span class="t-prompt">✓</span> <strong>Team Size:</strong> 1 to 4 Members</p>
+                <p><span class="t-prompt">✓</span> <strong>Registration:</strong> 100% Free (No Entry Fee)</p>
+                <p><span class="t-prompt">✓</span> <strong>Free Perks:</strong> Meals, Midnight Snacks, Drinks, WiFi & Rest Area</p>
+                <p><span class="t-prompt">✓</span> <strong>Certificates:</strong> Official Verified Certificates for all attendees</p>
+                <p style="margin-top: 14px; color: #00F0FF;"><span class="t-prompt">→</span> Registrations open to all college & university students!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: EVENT TRACKS -->
+    <section id="tracks">
+      <div class="multiverse-container">
+        <div class="section-header">
+          <div class="section-tag">
+            <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
+            <span>COMPETITION TRACKS</span>
+          </div>
+          <h2 class="section-title">CHOOSE YOUR TRACK</h2>
+          <p class="section-desc">
+            Select a specialized track tailored to your skillset. Each track features dedicated judging criteria and prize allocations.
+          </p>
+        </div>
+
+        <div class="tracks-grid" id="tracks-grid">
+          
+          <!-- Track 1: The Strategist -->
+          <div class="track-card tilt-card">
+            <div class="card-sheen"></div>
+            <div class="track-img-wrap">
+              <img src="assets/tracks/track_strategist.jpg" alt="The Strategist Track" class="track-img">
+              <span class="track-badge">TRACK 01</span>
+            </div>
+            <div class="track-body">
+              <span class="track-role">PROBLEM SOLVING</span>
+              <h3 class="track-title">THE STRATEGIST</h3>
+              <p class="track-desc">Competitive programming and algorithmic problem solving. Tackle complex data structures, graph theory, dynamic programming, and speed duels.</p>
+              <ul class="track-perks">
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Algorithmic Coding Arena</li>
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> 1v1 Speed Code Elimination</li>
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Dedicated Track Cash Prize</li>
+              </ul>
+              <button class="btn-primary track-btn" data-open-modal="register" data-track="STRATEGIST">
+                <span>REGISTER FOR TRACK 01</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Track 2: The Builder -->
+          <div class="track-card tilt-card">
+            <div class="card-sheen"></div>
+            <div class="track-img-wrap">
+              <img src="assets/tracks/track_builder.jpg" alt="The Builder Track" class="track-img">
+              <span class="track-badge">TRACK 02</span>
+            </div>
+            <div class="track-body">
+              <span class="track-role">DEVELOPMENT</span>
+              <h3 class="track-title">THE BUILDER</h3>
+              <p class="track-desc">Full-stack web and mobile application engineering. Build scalable web platforms, APIs, distributed cloud apps, or real-time tools.</p>
+              <ul class="track-perks">
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Full-Stack Web & App Sprints</li>
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Production-Ready Deployment</li>
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Dedicated Track Cash Prize</li>
+              </ul>
+              <button class="btn-primary track-btn" data-open-modal="register" data-track="BUILDER">
+                <span>REGISTER FOR TRACK 02</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Track 3: The Explorer -->
+          <div class="track-card tilt-card">
+            <div class="card-sheen"></div>
+            <div class="track-img-wrap">
+              <img src="assets/tracks/track_explorer.jpg" alt="The Explorer Track" class="track-img">
+              <span class="track-badge">TRACK 03</span>
+            </div>
+            <div class="track-body">
+              <span class="track-role">INNOVATION & AI</span>
+              <h3 class="track-title">THE EXPLORER</h3>
+              <p class="track-desc">Artificial Intelligence, Machine Learning, Generative AI models, autonomous agents, and deep technology implementations.</p>
+              <ul class="track-perks">
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Generative AI & LLM Systems</li>
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Computer Vision & Automation</li>
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Dedicated Track Cash Prize</li>
+              </ul>
+              <button class="btn-primary track-btn" data-open-modal="register" data-track="EXPLORER">
+                <span>REGISTER FOR TRACK 03</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Track 4: The Leader -->
+          <div class="track-card tilt-card">
+            <div class="card-sheen"></div>
+            <div class="track-img-wrap">
+              <img src="assets/tracks/track_leader.jpg" alt="The Leader Track" class="track-img">
+              <span class="track-badge">TRACK 04</span>
+            </div>
+            <div class="track-body">
+              <span class="track-role">TEAMWORK & DESIGN</span>
+              <h3 class="track-title">THE LEADER</h3>
+              <p class="track-desc">UI/UX design architecture, design systems, Figma interactive prototypes, product strategy, and compelling stage presentations.</p>
+              <ul class="track-perks">
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> UI/UX Design System Craft</li>
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Product Strategy & Final Pitch</li>
+                <li class="track-perk"><i data-lucide="check-circle-2"></i> Dedicated Track Cash Prize</li>
+              </ul>
+              <button class="btn-primary track-btn" data-open-modal="register" data-track="LEADER">
+                <span>REGISTER FOR TRACK 04</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="hammer-showcase" data-hammer-stage>
+      <span class="hammer-stage-anchor" aria-hidden="true"></span>
+      <div class="multiverse-container hammer-showcase-content">
+        <div class="hammer-showcase-copy">
+          <span class="hammer-stage-index">ARTIFACT MOMENT 02 / SHIFT</span>
+          <h2>ONE WORLD CHANGES EVERYTHING.</h2>
+          <button class="hammer-spin-btn" type="button" data-hammer-spin>
+            <i data-lucide="rotate-cw" aria-hidden="true"></i>
+            <span>SPIN THE HAMMER</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: EVENT HIGHLIGHTS -->
+    <section id="highlights">
+      <div class="multiverse-container">
+        <div class="section-header">
+          <div class="section-tag">
+            <i data-lucide="zap" style="width: 14px; height: 14px;"></i>
+            <span>WHY ATTEND</span>
+          </div>
+          <h2 class="section-title">EVENT HIGHLIGHTS</h2>
+          <p class="section-desc">
+            Experience what makes The Multiverse an unforgettable weekend of engineering, learning, and networking.
+          </p>
+        </div>
+
+        <div class="highlights-list" id="highlights-container">
+          
+          <div class="highlight-row">
+            <div class="hl-left">
+              <span class="hl-num">01</span>
+              <div>
+                <h3 class="hl-title">24-HOUR NON-STOP HACKATHON</h3>
+                <p class="hl-desc">Sprint from concept to working prototype with 24 hours of non-stop coding, power meals, and technical mentoring.</p>
+              </div>
+            </div>
+            <span class="hl-badge">24 HOURS</span>
+          </div>
+
+          <div class="highlight-row">
+            <div class="hl-left">
+              <span class="hl-num">02</span>
+              <div>
+                <h3 class="hl-title">1V1 SPEED CODING CLASHES</h3>
+                <p class="hl-desc">Face off against top competitive programmers in intense live-bracket algorithmic knockout rounds.</p>
+              </div>
+            </div>
+            <span class="hl-badge">COMPETITIVE</span>
+          </div>
+
+          <div class="highlight-row">
+            <div class="hl-left">
+              <span class="hl-num">03</span>
+              <div>
+                <h3 class="hl-title">INDUSTRY MENTORSHIP</h3>
+                <p class="hl-desc">Receive guidance and technical architectural feedback directly from senior engineers and alumni.</p>
+              </div>
+            </div>
+            <span class="hl-badge">MENTORSHIP</span>
+          </div>
+
+          <div class="highlight-row">
+            <div class="hl-left">
+              <span class="hl-num">04</span>
+              <div>
+                <h3 class="hl-title">STAGE PITCH & LIVE DEMOS</h3>
+                <p class="hl-desc">Pitch your project live on stage in the Bennett University Auditorium before an expert panel of judges.</p>
+              </div>
+            </div>
+            <span class="hl-badge">STAGE DEMO</span>
+          </div>
+
+          <div class="highlight-row">
+            <div class="hl-left">
+              <span class="hl-num">05</span>
+              <div>
+                <h3 class="hl-title">₹50,000+ CASH PRIZES & SWAG</h3>
+                <p class="hl-desc">Top teams win cash bounties, exclusive GFG merchandise, certificates, and premium course access.</p>
+              </div>
+            </div>
+            <span class="hl-badge">₹50,000+ REWARDS</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: SCHEDULE / TIMELINE -->
+    <section id="schedule">
+      <div class="multiverse-container">
+        <div class="section-header">
+          <div class="section-tag">
+            <i data-lucide="calendar" style="width: 14px; height: 14px;"></i>
+            <span>EVENT AGENDA</span>
+          </div>
+          <h2 class="section-title">CHRONO SCHEDULE</h2>
+          <p class="section-desc">
+            Complete schedule of activities from check-in to project presentations and the awards ceremony.
+          </p>
+        </div>
+
+        <div class="timeline-wrapper">
+          <div class="timeline-energy-track">
+            <div id="timeline-energy-bar"></div>
+          </div>
+
+          <div class="timeline-items">
+            
+            <div class="timeline-item active-node">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <span class="tl-time">DAY 1 • 09:30 AM</span>
+                <h3 class="tl-title">CHECK-IN & SQUAD REGISTRATION</h3>
+                <p class="tl-desc">Arrival at Bennett University, kit distribution, WiFi configuration, and team workstation allocation.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <span class="tl-time">DAY 1 • 10:30 AM</span>
+                <h3 class="tl-title">OPENING CEREMONY & PROBLEM REVEAL</h3>
+                <p class="tl-desc">Welcome address by GFG Student Chapter leads, briefing on track problem statements, rules, and scoring rubrics.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <span class="tl-time">DAY 1 • 11:30 AM</span>
+                <h3 class="tl-title">HACKATHON COMMENCES & CODING ROUND 1</h3>
+                <p class="tl-desc">24-hour hacking timer begins. Speed algorithmic problem-solving brackets commence.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <span class="tl-time">DAY 1 • 01:30 PM</span>
+                <h3 class="tl-title">LUNCH & NETWORKING BREAK</h3>
+                <p class="tl-desc">Complimentary lunch served at the campus dining hall + informal networking with mentors.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <span class="tl-time">DAY 1 • 05:00 PM</span>
+                <h3 class="tl-title">MENTOR CHECKPOINT REVIEW</h3>
+                <p class="tl-desc">Industry mentors visit team tables to review architectural progress and offer guidance.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <span class="tl-time">DAY 1 • 08:30 PM</span>
+                <h3 class="tl-title">DINNER & MIDNIGHT MINI-GAMES</h3>
+                <p class="tl-desc">Dinner served + gaming tournaments, quiz rounds, and refreshments to keep the energy high.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <span class="tl-time">DAY 2 • 11:30 AM</span>
+                <h3 class="tl-title">CODE FREEZE & FINAL SUBMISSIONS</h3>
+                <p class="tl-desc">GitHub repository submissions locked and portal closure. Final demo preparations.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-card">
+                <span class="tl-time">DAY 2 • 01:30 PM</span>
+                <h3 class="tl-title">GRAND AUDITORIUM PITCHES & AWARDS</h3>
+                <p class="tl-desc">Top finalist project presentations, jury evaluation, prize distribution, and closing celebration.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: EVENT DETAILS & INTEL -->
+    <section id="intel">
+      <div class="multiverse-container">
+        <div class="section-header">
+          <div class="section-tag">
+            <i data-lucide="check-square" style="width: 14px; height: 14px;"></i>
+            <span>KEY INFORMATION</span>
+          </div>
+          <h2 class="section-title">EVENT DETAILS</h2>
+          <p class="section-desc">
+            Dates, arrival, tracks, participation requirements, and practical details in one place.
+          </p>
+        </div>
+
+        <div class="intel-grid" id="intel-grid">
+          
+          <div class="intel-card">
+            <i data-lucide="calendar" class="intel-icon"></i>
+            <span class="intel-label">EVENT DATES</span>
+            <h3 class="intel-val">OCTOBER 24–25, 2026</h3>
+            <p class="intel-sub">24-hour continuous tech hackathon</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="clock" class="intel-icon"></i>
+            <span class="intel-label">EVENT FORMAT & START</span>
+            <h3 class="intel-val">24-HOUR HACKATHON</h3>
+            <p class="intel-sub">Day 1 check-in at 9:30 AM; build and coding rounds begin at 11:30 AM.</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="map-pin" class="intel-icon"></i>
+            <span class="intel-label">CAMPUS VENUE</span>
+            <h3 class="intel-val">BENNETT UNIVERSITY</h3>
+            <p class="intel-sub">Main Auditorium & Tech Labs, Greater Noida, UP</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="users" class="intel-icon"></i>
+            <span class="intel-label">TEAM SIZE</span>
+            <h3 class="intel-val">1 TO 4 MEMBERS</h3>
+            <p class="intel-sub">Participate solo or with your squad</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="graduation-cap" class="intel-icon"></i>
+            <span class="intel-label">ELIGIBILITY</span>
+            <h3 class="intel-val">STUDENTS IN INDIA</h3>
+            <p class="intel-sub">School, undergraduate, and postgraduate students from recognized institutions.</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="wifi" class="intel-icon"></i>
+            <span class="intel-label">CAMPUS AMENITIES</span>
+            <h3 class="intel-val">MEALS & HIGH-SPEED WIFI</h3>
+            <p class="intel-sub">Free meals, snacks, rest areas, and connectivity</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="ticket" class="intel-icon"></i>
+            <span class="intel-label">REGISTRATION FEE</span>
+            <h3 class="intel-val">100% FREE ENTRY</h3>
+            <p class="intel-sub">Fully sponsored by GFG Student Chapter</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="layers" class="intel-icon"></i>
+            <span class="intel-label">COMPETITION TRACKS</span>
+            <h3 class="intel-val">FOUR SPECIALIZED TRACKS</h3>
+            <p class="intel-sub">Strategist, Builder, Explorer, and Leader.</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="trophy" class="intel-icon"></i>
+            <span class="intel-label">PRIZES & RECOGNITION</span>
+            <h3 class="intel-val">₹50,000+ PRIZE POOL</h3>
+            <p class="intel-sub">Cash prizes, GFG merchandise, and participation certificates.</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="laptop" class="intel-icon"></i>
+            <span class="intel-label">WHAT TO BRING</span>
+            <h3 class="intel-val">LAPTOP & STUDENT ID</h3>
+            <p class="intel-sub">Bring your laptop, charger or extension board, and student ID.</p>
+          </div>
+
+          <div class="intel-card">
+            <i data-lucide="scale" class="intel-icon"></i>
+            <span class="intel-label">PROJECT JUDGING</span>
+            <h3 class="intel-val">FOUR-PART SCORECARD</h3>
+            <p class="intel-sub">Innovation 35%, usability 25%, UI/UX 20%, and presentation 20%.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: FAQS -->
+    <section id="faqs">
+      <div class="multiverse-container">
+        <div class="section-header">
+          <div class="section-tag">
+            <i data-lucide="help-circle" style="width: 14px; height: 14px;"></i>
+            <span>QUESTIONS & ANSWERS</span>
+          </div>
+          <h2 class="section-title">FREQUENTLY ASKED QUESTIONS</h2>
+          <p class="section-desc">
+            Common questions answered by the organizing team.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          
+          <div class="faq-item active">
+            <div class="faq-header" role="button" tabindex="0" aria-expanded="true">
+              <h3 class="faq-question">Who is eligible to participate?</h3>
+              <i data-lucide="plus" class="faq-icon"></i>
+            </div>
+            <div class="faq-body" style="max-height: 200px;">
+              <p class="faq-answer">
+                Any undergraduate, postgraduate, or school student from any recognized institution in India is welcome to participate. Cross-college teams are completely allowed.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header" role="button" tabindex="0" aria-expanded="false">
+              <h3 class="faq-question">Is there any entry or registration fee?</h3>
+              <i data-lucide="plus" class="faq-icon"></i>
+            </div>
+            <div class="faq-body">
+              <p class="faq-answer">
+                No, registration is 100% free of charge! All meals, snacks, high-speed WiFi, mentorship, and event swags are provided completely free by the GFG Student Chapter.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header" role="button" tabindex="0" aria-expanded="false">
+              <h3 class="faq-question">What should I bring to the venue?</h3>
+              <i data-lucide="plus" class="faq-icon"></i>
+            </div>
+            <div class="faq-body">
+              <p class="faq-answer">
+                Please bring your laptop, charger/extension board, student ID card, and your digital Hero Access Pass generated during online registration.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header" role="button" tabindex="0" aria-expanded="false">
+              <h3 class="faq-question">What is the allowed team size?</h3>
+              <i data-lucide="plus" class="faq-icon"></i>
+            </div>
+            <div class="faq-body">
+              <p class="faq-answer">
+                Teams can consist of 1 to 4 members. You can participate solo or as part of a squad.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header" role="button" tabindex="0" aria-expanded="false">
+              <h3 class="faq-question">Will all participants receive certificates?</h3>
+              <i data-lucide="plus" class="faq-icon"></i>
+            </div>
+            <div class="faq-body">
+              <p class="faq-answer">
+                Yes! All verified attendees who submit their project or participate in coding duels will receive official digital Certificates of Participation co-branded by GeeksForGeeks and Bennett University.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header" role="button" tabindex="0" aria-expanded="false">
+              <h3 class="faq-question">How are projects evaluated?</h3>
+              <i data-lucide="plus" class="faq-icon"></i>
+            </div>
+            <div class="faq-body">
+              <p class="faq-answer">
+                Projects are evaluated by industry judges based on Technical Innovation (35%), Practical Usability (25%), UI/UX Design (20%), and Stage Presentation (20%).
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="hammer-showcase" data-hammer-stage>
+      <span class="hammer-stage-anchor" aria-hidden="true"></span>
+      <div class="multiverse-container hammer-showcase-content">
+        <div class="hammer-showcase-copy">
+          <span class="hammer-stage-index">ARTIFACT MOMENT 03 / IGNITION</span>
+          <h2>THE NEXT CHAPTER IS YOURS.</h2>
+          <button class="hammer-spin-btn" type="button" data-hammer-spin>
+            <i data-lucide="rotate-cw" aria-hidden="true"></i>
+            <span>SPIN THE HAMMER</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: FINAL CTA -->
+    <section id="final-cta">
+      <div class="multiverse-container">
+        <div class="cta-wrap reveal-up">
+          <div class="section-tag section-tag-red" style="margin-bottom: 24px;">
+            <i data-lucide="flag" style="width: 14px; height: 14px;"></i>
+            <span>REGISTRATIONS CLOSING SOON</span>
+          </div>
+          <h2 class="cta-title">YOU'VE SEEN THE STORM.<br>YOU'VE SEEN THE CHALLENGE.<br>NOW, ANSWER THE CALL.</h2>
+          <p class="cta-sub">
+            Assemble your team, select your track, and claim your place among the heroes of Bennett University.
+          </p>
+          <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn-primary" data-open-modal="register" style="padding: 18px 42px; font-size: 1.05rem;">
+              <i data-lucide="zap"></i>
+              <span>REGISTER NOW (FREE)</span>
+            </button>
+            <a href="#event-hero" class="btn-secondary" style="padding: 18px 36px;">
+              <i data-lucide="arrow-up"></i>
+              <span>BACK TO TOP</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <div class="multiverse-container">
+        <div class="footer-top">
+          <div class="nav-brand">
+            <div class="brand-icon">
+              <i data-lucide="shield"></i>
+            </div>
+            <div class="brand-info">
+              <span class="brand-title">GEEKSFORGEEKS STUDENT CHAPTER</span>
+              <span class="brand-sub">BENNETT UNIVERSITY • THE MULTIVERSE 2026</span>
+            </div>
+          </div>
+
+          <div class="footer-socials">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+              <i data-lucide="instagram"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+              <i data-lucide="linkedin"></i>
+            </a>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+              <i data-lucide="github"></i>
+            </a>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Discord">
+              <i data-lucide="message-square"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© 2026 GFG Student Chapter, Bennett University. All Rights Reserved.</span>
+          <span>Designed with passion for student innovators.</span>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Interactive Registration Modal & Access Pass Generator -->
+  <div id="register-modal">
+    <div class="modal-dialog">
+      <button class="modal-close" id="modal-close-btn" aria-label="Close Modal">
+        <i data-lucide="x"></i>
+      </button>
+
+      <!-- View 1: Registration Form -->
+      <div id="modal-form-view">
+        <div class="section-tag" style="margin-bottom: 12px;">
+          <span>EVENT REGISTRATION</span>
+        </div>
+        <h2 class="modal-title">REGISTER YOUR SQUAD</h2>
+        <p class="modal-desc">Fill in your team details to generate your official Hero Access Pass.</p>
+
+        <form id="registration-form">
+          <div class="form-group">
+            <label class="form-label" for="reg-team">TEAM / SQUAD NAME</label>
+            <input type="text" id="reg-team" class="form-input" placeholder="e.g. Asgardian Coders" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-name">TEAM LEADER NAME</label>
+              <input type="text" id="reg-name" class="form-input" placeholder="e.g. Rahul Sharma" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-email">EMAIL ADDRESS</label>
+              <input type="email" id="reg-email" class="form-input" placeholder="leader@college.edu" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-college">COLLEGE / UNIVERSITY</label>
+              <input type="text" id="reg-college" class="form-input" placeholder="e.g. Bennett University" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-track">SELECT TRACK</label>
+              <select id="reg-track" class="form-select">
+                <option value="STRATEGIST">Track 1: THE STRATEGIST (Problem Solving)</option>
+                <option value="BUILDER">Track 2: THE BUILDER (Development)</option>
+                <option value="EXPLORER">Track 3: THE EXPLORER (Innovation & AI)</option>
+                <option value="LEADER">Track 4: THE LEADER (UI/UX & Design)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-size">TEAM SIZE</label>
+              <select id="reg-size" class="form-select">
+                <option value="1">1 Member (Solo)</option>
+                <option value="2">2 Members</option>
+                <option value="3">3 Members</option>
+                <option value="4" selected>4 Members</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-phone">PHONE / WHATSAPP</label>
+              <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">
+            <i data-lucide="check-circle"></i>
+            <span>SUBMIT & GET HERO ACCESS PASS</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- View 2: Generated Marvel Hero Access Pass -->
+      <div id="modal-pass-view" style="display: none; text-align: center;">
+        <div class="section-tag" style="margin-bottom: 12px; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: #10B981;">
+          <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+          <span>REGISTRATION CONFIRMED</span>
+        </div>
+        <h2 class="modal-title" style="margin-bottom: 4px;">HERO ACCESS PASS</h2>
+        <p class="modal-desc">Present this pass at the Bennett University registration desk.</p>
+
+        <div class="hero-pass-ticket">
+          <div class="ticket-header">
+            <div class="ticket-brand">GFG × BENNETT UNIVERSITY</div>
+            <span class="ticket-pass-id" id="pass-code-display">GFG-BU-MV8492</span>
+          </div>
+
+          <div class="ticket-grid">
+            <div style="text-align: left;">
+              <span class="ticket-field-label">TEAM NAME</span>
+              <div class="ticket-field-val" id="pass-team-display">QUANTUM AVENGERS</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="ticket-field-label">TRACK</span>
+              <div class="ticket-field-val" id="pass-track-display">STRATEGIST</div>
+            </div>
+            <div style="text-align: left;">
+              <span class="ticket-field-label">LEADER</span>
+              <div class="ticket-field-val" id="pass-lead-display">OPERATIVE ZERO</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="ticket-field-label">TEAM SIZE</span>
+              <div class="ticket-field-val" id="pass-size-display">4 MEMBERS</div>
+            </div>
+            <div style="text-align: left;">
+              <span class="ticket-field-label">COLLEGE</span>
+              <div class="ticket-field-val" id="pass-college-display">BENNETT UNIVERSITY</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="ticket-field-label">ISSUE DATE</span>
+              <div class="ticket-field-val" id="pass-timestamp-display">OCT 24, 2026</div>
+            </div>
+          </div>
+
+          <!-- Barcode simulation -->
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.3em; color: var(--accent-cyan); border-top: 1px dashed rgba(0, 240, 255, 0.2); padding-top: 12px;">
+            ||| | |||| || | ||||| ||| || |||| ||||| || |||
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn-primary" id="copy-pass-btn">
+            <i data-lucide="copy"></i>
+            <span>COPY PASS ID</span>
+          </button>
+          <button class="btn-secondary" onclick="window.print()">
+            <i data-lucide="printer"></i>
+            <span>PRINT / SAVE PDF</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio-synth.js?v=4.0"></script>
+  <script src="js/lightning.js?v=3.0"></script>
+  <script src="js/background-lightning.js?v=1.0"></script>
+  <script src="js/scrollytelling.js?v=4.0"></script>
+  <script src="js/ui-effects.js?v=3.0"></script>
+  <script src="js/app.js?v=4.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.145.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.145.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="js/hammer-scene.js?v=1.0"></script>
+  
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
