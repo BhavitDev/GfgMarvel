@@ -53,7 +53,7 @@ class FloatingHammerScene {
         end: 'bottom top',
         onUpdate: (trigger) => {
           this.scrollProgress = trigger.progress;
-          window.backgroundLightning?.setIntensity(trigger.progress);
+          window.backgroundLightning?.setIntensity?.(trigger.progress);
         }
       });
     }
@@ -428,7 +428,7 @@ class FloatingHammerScene {
         this.main.classList.add('hammer-climax-active');
         if (!this.climaxPulsePlayed) {
           this.climaxPulsePlayed = true;
-          window.backgroundLightning?.triggerStormFlash();
+          window.backgroundLightning?.triggerStormFlash?.();
         }
       }
     } else if (focus < 0.14) {
@@ -523,7 +523,7 @@ class FloatingHammerScene {
       targetScreenY = guideEntry ? guideEntry.fromY + (guideY - guideEntry.fromY) * guideEase : guideY;
     }
     if (time >= this.nextEnergyPulseAt && !this.motionPreference.matches) {
-      window.backgroundLightning?.triggerInteractionPulse(targetScreenX, targetScreenY, 0.8);
+      window.backgroundLightning?.triggerInteractionPulse?.(targetScreenX, targetScreenY, 0.8);
       this.nextEnergyPulseAt = time + 8000 + Math.random() * 6500;
     }
     const elapsed = this.lastPoseTime === undefined || time <= this.lastPoseTime
@@ -641,7 +641,7 @@ class FloatingHammerScene {
     this.main.style.setProperty('--impact-x', `${Math.min(98, Math.max(2, (impactX - ctaRect.left) / ctaRect.width * 100))}%`);
     this.main.style.setProperty('--impact-y', `${Math.min(92, Math.max(8, (impactY - ctaRect.top) / ctaRect.height * 100))}%`);
     this.main.classList.add('hammer-final-impact', 'hammer-final-landed');
-    window.backgroundLightning?.triggerInteractionPulse(impactX, impactY, 2);
+    window.backgroundLightning?.triggerInteractionPulse?.(impactX, impactY, 2);
     window.setTimeout(() => this.main.classList.remove('hammer-final-impact'), this.motionPreference.matches ? 80 : 620);
   }
 

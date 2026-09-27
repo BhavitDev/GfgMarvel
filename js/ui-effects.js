@@ -542,7 +542,7 @@ class MultiverseUI {
       }));
       document.dispatchEvent(new CustomEvent('hammer:react'));
       const rect = element.getBoundingClientRect();
-      window.backgroundLightning?.triggerInteractionPulse(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      window.backgroundLightning?.triggerInteractionPulse?.(rect.left + rect.width / 2, rect.top + rect.height / 2);
     };
 
     targets.forEach((element) => {
@@ -566,7 +566,7 @@ class MultiverseUI {
       const strong = Boolean(target?.closest('[data-open-modal="register"], .btn-primary, [type="submit"], [data-impact="strong"]'));
       const strength = strong ? 1.65 : 1;
 
-      window.backgroundLightning?.triggerClickImpact(event.clientX, event.clientY, strong);
+      window.backgroundLightning?.triggerClickImpact?.(event.clientX, event.clientY, strong);
       document.dispatchEvent(new CustomEvent('hammer:impact', { detail: { strength } }));
     });
   }
