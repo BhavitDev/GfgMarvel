@@ -13,20 +13,10 @@
   <meta property="og:type" content="website">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css?v=3.0">
-  <link rel="stylesheet" href="css/cinematic.css?v=4.0">
-  <link rel="stylesheet" href="css/components.css?v=3.0">
-  <link rel="stylesheet" href="css/polish.css?v=1.0">
-
-  <script>
-    try {
-      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-      if (localStorage.getItem('gfg_intro_seen') === 'true') {
-        document.documentElement.classList.remove('intro-pending');
-        document.documentElement.classList.add('intro-seen');
-      }
-    } catch {}
-  </script>
+  <link rel="stylesheet" href="css/style.css?v=3.1">
+  <link rel="stylesheet" href="css/cinematic.css?v=4.1">
+  <link rel="stylesheet" href="css/components.css?v=3.1">
+  <link rel="stylesheet" href="css/polish.css?v=2.0">
 
   <!-- GSAP, ScrollTrigger, Lucide Icons, Confetti -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -60,6 +50,7 @@
   <!-- Custom Cursor -->
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
+  <canvas id="click-impact-overlay" aria-hidden="true"></canvas>
 
   <!-- Top Fixed HUD Controls -->
   <div class="hud-controls-top">
@@ -129,7 +120,9 @@
 
   <!-- 2. Main Event Website -->
   <main id="main-content">
+    <div class="pointer-atmosphere" aria-hidden="true"></div>
     <canvas id="background-lightning" aria-hidden="true"></canvas>
+    <canvas id="ambient-particles" aria-hidden="true"></canvas>
     <canvas id="hammer-model-canvas" aria-hidden="true"></canvas>
 
     <!-- Fixed Glass Navbar -->
@@ -207,7 +200,8 @@
 
           <!-- Live Real-Time Countdown HUD -->
           <span class="countdown-eyebrow reveal-up">EVENT BEGINS IN</span>
-          <div class="countdown-box reveal-up">
+          <span class="countdown-eyebrow reveal-up" id="countdown-eyebrow">EVENT BEGINS IN</span>
+          <div class="countdown-box reveal-up" id="event-countdown" role="timer" aria-label="Time until the event begins">
             <div class="cd-unit">
               <span class="cd-val" id="cd-days">00</span>
               <span class="cd-label">DAYS</span>
@@ -225,6 +219,7 @@
               <span class="cd-label">SECONDS</span>
             </div>
           </div>
+          <div class="countdown-complete" id="countdown-complete" role="status" hidden>THE STORM HAS ARRIVED</div>
 
           <!-- Dual Action CTAs -->
           <div class="hero-actions reveal-up">
@@ -368,7 +363,7 @@
           <div class="track-card tilt-card">
             <div class="card-sheen"></div>
             <div class="track-img-wrap">
-              <img src="assets/tracks/track_strategist.jpg" alt="The Strategist Track" class="track-img">
+              <img src="assets/tracks/track_strategist.jpg" alt="Hero-themed artwork for the problem-solving track" class="track-img">
               <span class="track-badge">TRACK 01</span>
             </div>
             <div class="track-body">
@@ -390,7 +385,7 @@
           <div class="track-card tilt-card">
             <div class="card-sheen"></div>
             <div class="track-img-wrap">
-              <img src="assets/tracks/track_builder.jpg" alt="The Builder Track" class="track-img">
+              <img src="assets/tracks/track_builder.jpg" alt="Hero-themed artwork for the development track" class="track-img">
               <span class="track-badge">TRACK 02</span>
             </div>
             <div class="track-body">
@@ -412,7 +407,7 @@
           <div class="track-card tilt-card">
             <div class="card-sheen"></div>
             <div class="track-img-wrap">
-              <img src="assets/tracks/track_explorer.jpg" alt="The Explorer Track" class="track-img">
+              <img src="assets/tracks/track_explorer.jpg" alt="Hero-themed artwork for the innovation and AI track" class="track-img">
               <span class="track-badge">TRACK 03</span>
             </div>
             <div class="track-body">
@@ -434,7 +429,7 @@
           <div class="track-card tilt-card">
             <div class="card-sheen"></div>
             <div class="track-img-wrap">
-              <img src="assets/tracks/track_leader.jpg" alt="The Leader Track" class="track-img">
+              <img src="assets/tracks/track_leader.jpg" alt="Hero-themed artwork for the teamwork and design track" class="track-img">
               <span class="track-badge">TRACK 04</span>
             </div>
             <div class="track-body">
@@ -885,21 +880,6 @@
               <span class="brand-sub">BENNETT UNIVERSITY • THE MULTIVERSE 2026</span>
             </div>
           </div>
-
-          <div class="footer-socials">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
-              <i data-lucide="instagram"></i>
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
-              <i data-lucide="linkedin"></i>
-            </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
-              <i data-lucide="github"></i>
-            </a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Discord">
-              <i data-lucide="message-square"></i>
-            </a>
-          </div>
         </div>
 
         <div class="footer-bottom">
@@ -925,6 +905,14 @@
         </div>
         <h2 class="modal-title">REGISTER YOUR SQUAD</h2>
         <p class="modal-desc">Fill in your team details to generate your official Hero Access Pass.</p>
+
+        <div class="registration-guide" id="registration-guide" role="status" aria-live="polite" aria-atomic="true">
+          <span class="registration-guide-hammer" aria-hidden="true"><i data-lucide="hammer"></i></span>
+          <div>
+            <span class="registration-guide-step" id="registration-guide-step">STEP 1 OF 7</span>
+            <p id="registration-guide-message">Start with a name for your squad.</p>
+          </div>
+        </div>
 
         <form id="registration-form">
           <div class="form-group">
@@ -973,6 +961,12 @@
               <label class="form-label" for="reg-phone">PHONE / WHATSAPP</label>
               <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" required>
             </div>
+          </div>
+
+          <div class="registration-guide-actions" id="registration-guide-actions">
+            <button class="btn-secondary" type="button" id="registration-guide-back" disabled>BACK</button>
+            <button class="btn-secondary" type="button" id="registration-guide-skip">SKIP GUIDE</button>
+            <button class="btn-primary" type="button" id="registration-guide-next">NEXT FIELD</button>
           </div>
 
           <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">
@@ -1048,13 +1042,14 @@
   <!-- Scripts -->
   <script src="js/audio-synth.js?v=4.0"></script>
   <script src="js/lightning.js?v=3.0"></script>
-  <script src="js/background-lightning.js?v=1.0"></script>
-  <script src="js/scrollytelling.js?v=4.0"></script>
-  <script src="js/ui-effects.js?v=3.0"></script>
+  <script src="js/background-lightning.js?v=1.8"></script>
+  <script src="js/ambient-particles.js?v=1.1"></script>
+  <script src="js/scrollytelling.js?v=4.3"></script>
+  <script src="js/ui-effects.js?v=3.6"></script>
   <script src="js/app.js?v=4.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.145.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.145.0/examples/js/loaders/GLTFLoader.js"></script>
-  <script src="js/hammer-scene.js?v=1.0"></script>
+  <script src="js/hammer-scene.js?v=1.8"></script>
   
   <script>
     // Initialize Lucide icons

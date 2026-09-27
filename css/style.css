@@ -312,6 +312,20 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(0, 240, 255, 0.06);
 }
 
+.cursor-ring.cursor-grab {
+  width: 40px;
+  height: 40px;
+  border-color: rgba(85, 199, 255, 0.85);
+  background: rgba(85, 199, 255, 0.08);
+}
+
+.cursor-ring.cursor-grabbing {
+  width: 46px;
+  height: 46px;
+  border-color: #b8e8ff;
+  background: rgba(85, 199, 255, 0.16);
+}
+
 @media (max-width: 768px) {
   .cursor-dot, .cursor-ring {
     display: none !important;

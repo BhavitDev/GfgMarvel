@@ -61,11 +61,6 @@ class HammerSequenceController {
     const hudControls = document.querySelector('.hud-controls-top');
     if (!overlay || !mainSection) return;
 
-    let hasSeenIntro = false;
-    try {
-      hasSeenIntro = localStorage.getItem('gfg_intro_seen') === 'true';
-    } catch {}
-
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo({ top: 0, behavior: 'instant' });
     document.body.classList.add('opening-intro-active');
@@ -78,35 +73,34 @@ class HammerSequenceController {
     }
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (hasSeenIntro || reducedMotion) {
+    if (reducedMotion) {
       overlay.classList.add('controls-visible');
       if (skipButton) skipButton.disabled = false;
       if (hudControls) hudControls.inert = false;
-      this.openingTimers.push(window.setTimeout(() => this.finishOpeningExperience(false), hasSeenIntro ? 40 : 450));
+      this.openingTimers.push(window.setTimeout(() => this.finishOpeningExperience(false), 450));
       return;
     }
 
+    const openingDelay = 4500;
     this.openingTimers.push(window.setTimeout(() => {
       overlay.classList.add('controls-visible', 'brand-reveal');
       if (skipButton) skipButton.disabled = false;
       if (hudControls) hudControls.inert = false;
-      this.triggerOpeningFlash('flash-one');
-      window.multiverseAudio?.playIntroThunder();
-    }, 1100));
+    }, openingDelay));
 
     this.openingTimers.push(window.setTimeout(() => {
       overlay.classList.remove('brand-reveal');
       overlay.classList.add('presents-reveal');
-    }, 1800));
+    }, openingDelay + 1600));
 
     this.openingTimers.push(window.setTimeout(() => {
       overlay.classList.add('flash-two');
       this.triggerOpeningFlash('flash-two');
       window.multiverseAudio?.playIntroZap();
-    }, 2750));
+    }, openingDelay + 3050));
 
-    this.openingTimers.push(window.setTimeout(() => this.preloadFrames(), 3800));
-    this.openingTimers.push(window.setTimeout(() => this.finishOpeningExperience(false), 3620));
+    this.openingTimers.push(window.setTimeout(() => this.preloadFrames(), openingDelay + 2700));
+    this.openingTimers.push(window.setTimeout(() => this.finishOpeningExperience(false), openingDelay + 3600));
   }
 
   triggerOpeningFlash(className) {
@@ -126,10 +120,6 @@ class HammerSequenceController {
     this.openingFinished = true;
     this.openingTimers.forEach((timer) => window.clearTimeout(timer));
     this.openingTimers = [];
-
-    try {
-      localStorage.setItem('gfg_intro_seen', 'true');
-    } catch {}
 
     const overlay = document.getElementById('opening-intro');
     const mainSection = document.getElementById('main-content');
@@ -166,6 +156,8 @@ class HammerSequenceController {
 
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.scale(dpr, dpr);
+    this.ctx.imageSmoothingEnabled = true;
+    this.ctx.imageSmoothingQuality = 'high';
 
     if (this.lightningEngine) {
       this.lightningEngine.resize(w, h);

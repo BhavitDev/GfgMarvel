@@ -3,6 +3,8 @@
  * Countdown timer, 3D card tilt, FAQ accordions, registration modal & ticket generator.
  */
 
+const EVENT_DATE = new Date('2026-10-24T10:00:00+05:30').getTime();
+
 class MultiverseUI {
   constructor() {
     this.countdownInterval = null;
@@ -11,11 +13,37 @@ class MultiverseUI {
     this.initTimelineProgress();
     this.initAccordion();
     this.initModalAndPassGenerator();
+    this.initPointerAtmosphere();
     this.initCustomCursor();
     this.initMobileNav();
     this.initSmoothNavScroll();
     this.initActiveNavigation();
     this.initHammerReactions();
+    this.initGlobalClickImpact();
+  }
+
+  initPointerAtmosphere() {
+    const main = document.getElementById('main-content');
+    const pointerPreference = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (!main || !pointerPreference.matches) return;
+
+    let pointerFrame = 0;
+    let latestPointer = null;
+    window.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse' || !pointerPreference.matches) return;
+      latestPointer = { x: event.clientX, y: event.clientY };
+      if (pointerFrame) return;
+
+      pointerFrame = requestAnimationFrame(() => {
+        pointerFrame = 0;
+        if (!latestPointer) return;
+        main.style.setProperty('--pointer-x', `${latestPointer.x}px`);
+        main.style.setProperty('--pointer-y', `${latestPointer.y}px`);
+        main.classList.add('pointer-active');
+        window.backgroundLightning?.setPointer(latestPointer.x, latestPointer.y);
+        window.hammerScene?.setPointer(latestPointer.x, latestPointer.y);
+      });
+    }, { passive: true });
   }
 
   /* -------------------------------------------------------------
@@ -26,21 +54,25 @@ class MultiverseUI {
     const hoursEl = document.getElementById('cd-hours');
     const minsEl = document.getElementById('cd-mins');
     const secsEl = document.getElementById('cd-secs');
+    const countdownBox = document.getElementById('event-countdown');
+    const countdownEyebrow = document.getElementById('countdown-eyebrow');
+    const completionMessage = document.getElementById('countdown-complete');
 
-    if (!daysEl) return;
-
-    // Target event date: October 24, 2026 10:00:00 IST
-    const eventDate = new Date('2026-10-24T10:00:00+05:30').getTime();
+    if (!daysEl || !countdownBox) return;
 
     const updateTimer = () => {
       const now = new Date().getTime();
-      const distance = eventDate - now;
+      const distance = EVENT_DATE - now;
 
-      if (distance < 0) {
+      if (distance <= 0) {
         if (daysEl) daysEl.textContent = '00';
         if (hoursEl) hoursEl.textContent = '00';
         if (minsEl) minsEl.textContent = '00';
         if (secsEl) secsEl.textContent = '00';
+        countdownBox.hidden = true;
+        if (countdownEyebrow) countdownEyebrow.hidden = true;
+        if (completionMessage) completionMessage.hidden = false;
+        document.getElementById('main-content')?.classList.add('event-countdown-complete');
         clearInterval(this.countdownInterval);
         return;
       }
@@ -50,10 +82,23 @@ class MultiverseUI {
       const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const secs = Math.floor((distance % (1000 * 60)) / 1000);
 
+      const previousMinutes = minsEl?.textContent;
+      const previousSeconds = secsEl?.textContent;
       daysEl.textContent = String(days).padStart(2, '0');
       hoursEl.textContent = String(hours).padStart(2, '0');
       minsEl.textContent = String(mins).padStart(2, '0');
       secsEl.textContent = String(secs).padStart(2, '0');
+
+      if (previousSeconds !== secsEl.textContent) {
+        secsEl.classList.remove('countdown-value-tick');
+        void secsEl.offsetWidth;
+        secsEl.classList.add('countdown-value-tick');
+      }
+      if (previousMinutes !== minsEl.textContent) {
+        countdownBox.classList.remove('countdown-minute-pulse');
+        void countdownBox.offsetWidth;
+        countdownBox.classList.add('countdown-minute-pulse');
+      }
     };
 
     updateTimer();
@@ -182,6 +227,78 @@ class MultiverseUI {
     const form = document.getElementById('registration-form');
     const formView = document.getElementById('modal-form-view');
     const passView = document.getElementById('modal-pass-view');
+    const guide = document.getElementById('registration-guide');
+    const guideStepLabel = document.getElementById('registration-guide-step');
+    const guideMessage = document.getElementById('registration-guide-message');
+    const guideBackBtn = document.getElementById('registration-guide-back');
+    const guideNextBtn = document.getElementById('registration-guide-next');
+    const guideSkipBtn = document.getElementById('registration-guide-skip');
+    const guideFields = Array.from(form?.querySelectorAll('.form-group .form-input, .form-group .form-select') || []);
+    const guideMessages = [
+      'Start with a name for your squad.',
+      'Who will lead the team? Enter the team leader’s full name.',
+      'Add an email address where we can reach your team.',
+      'Tell us which college or university you represent.',
+      'Choose the track that best fits your project.',
+      'How many members are in your squad?',
+      'Add a phone or WhatsApp number for event updates.'
+    ];
+    let guideIndex = 0;
+    let allowGuidedSubmit = false;
+
+    const setGuideStep = (index) => {
+      guideIndex = Math.max(0, Math.min(index, guideFields.length - 1));
+      if (guideStepLabel) guideStepLabel.textContent = `STEP ${guideIndex + 1} OF ${guideFields.length}`;
+      if (guideMessage) guideMessage.textContent = guideMessages[guideIndex];
+      guideFields.forEach((field, fieldIndex) => {
+        const group = field.closest('.form-group');
+        group?.classList.toggle('guide-current', fieldIndex === guideIndex);
+        if (fieldIndex === guideIndex) group?.setAttribute('aria-current', 'step');
+        else group?.removeAttribute('aria-current');
+      });
+      if (guideBackBtn) guideBackBtn.disabled = guideIndex === 0;
+      if (guideNextBtn) guideNextBtn.textContent = guideIndex === guideFields.length - 1 ? 'GENERATE PASS' : 'NEXT FIELD';
+      if (guide) {
+        guide.classList.remove('is-tapping');
+        void guide.offsetWidth;
+        guide.classList.add('is-tapping');
+      }
+      guideFields[guideIndex]?.focus({ preventScroll: true });
+      window.hammerScene?.setRegistrationGuideTarget(guideFields[guideIndex]);
+    };
+
+    const startRegistrationGuide = () => {
+      modal?.classList.remove('guide-skipped');
+      form?.classList.add('guide-active');
+      setGuideStep(0);
+    };
+
+    const submitGuidedForm = () => {
+      allowGuidedSubmit = true;
+      form?.requestSubmit();
+      allowGuidedSubmit = false;
+    };
+
+    guideBackBtn?.addEventListener('click', () => setGuideStep(guideIndex - 1));
+    guideNextBtn?.addEventListener('click', () => {
+      const field = guideFields[guideIndex];
+      if (field && !field.checkValidity()) {
+        field.reportValidity();
+        return;
+      }
+      if (guideIndex === guideFields.length - 1) submitGuidedForm();
+      else setGuideStep(guideIndex + 1);
+    });
+    guideSkipBtn?.addEventListener('click', () => {
+      modal?.classList.add('guide-skipped');
+      form?.classList.remove('guide-active');
+      window.hammerScene?.clearRegistrationGuideTarget();
+      guideFields.forEach((field) => {
+        const group = field.closest('.form-group');
+        group?.classList.remove('guide-current');
+        group?.removeAttribute('aria-current');
+      });
+    });
 
     const openModal = (defaultTrack = '') => {
       if (modal) {
@@ -195,6 +312,7 @@ class MultiverseUI {
           const trackSelect = document.getElementById('reg-track');
           if (trackSelect) trackSelect.value = defaultTrack;
         }
+        startRegistrationGuide();
       }
     };
 
@@ -203,6 +321,7 @@ class MultiverseUI {
         modal.classList.remove('modal-open');
         document.body.style.overflow = '';
       }
+      window.hammerScene?.clearRegistrationGuideTarget();
     };
 
     openBtns.forEach((btn) => {
@@ -225,6 +344,16 @@ class MultiverseUI {
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
+        if (form.classList.contains('guide-active') && !allowGuidedSubmit) {
+          const field = guideFields[guideIndex];
+          if (field && !field.checkValidity()) {
+            field.reportValidity();
+            return;
+          }
+          if (guideIndex === guideFields.length - 1) submitGuidedForm();
+          else setGuideStep(guideIndex + 1);
+          return;
+        }
         const teamName = document.getElementById('reg-team').value.trim() || 'QUANTUM AVENGERS';
         const leadName = document.getElementById('reg-name').value.trim() || 'OPERATIVE ZERO';
         const college = document.getElementById('reg-college').value.trim() || 'BENNETT UNIVERSITY';
@@ -252,6 +381,7 @@ class MultiverseUI {
         if (passSizeEl) passSizeEl.textContent = `${teamSize} OPERATIVES`;
         if (passDateEl) passDateEl.textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
+        window.hammerScene?.clearRegistrationGuideTarget();
         if (formView && passView) {
           formView.style.display = 'none';
           passView.style.display = 'block';
@@ -385,9 +515,59 @@ class MultiverseUI {
   }
 
   initHammerReactions() {
-    document.querySelectorAll('.highlight-row, .track-card').forEach((item) => {
-      item.addEventListener('mouseenter', () => document.dispatchEvent(new CustomEvent('hammer:react')));
-      item.addEventListener('focusin', () => document.dispatchEvent(new CustomEvent('hammer:react')));
+    const main = document.getElementById('main-content');
+    const pointerPreference = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const targets = document.querySelectorAll('[data-open-modal="register"], .track-card, .timeline-item');
+    const activeTargets = new Map();
+    let currentTarget = null;
+
+    const syncTarget = () => {
+      const entries = [...activeTargets.entries()];
+      const nextTarget = entries.at(-1) || null;
+      if (currentTarget?.[0] === nextTarget?.[0]) return;
+      if (currentTarget) {
+        currentTarget[0].classList.remove('hammer-target-active');
+        document.dispatchEvent(new CustomEvent('hammer:target', {
+          detail: { element: currentTarget[0], kind: currentTarget[1], active: false }
+        }));
+      }
+      currentTarget = nextTarget;
+      main?.classList.toggle('hammer-reacting', Boolean(currentTarget));
+      if (!currentTarget) return;
+
+      const [element, kind] = currentTarget;
+      element.classList.add('hammer-target-active');
+      document.dispatchEvent(new CustomEvent('hammer:target', {
+        detail: { element, kind, active: true }
+      }));
+      document.dispatchEvent(new CustomEvent('hammer:react'));
+      const rect = element.getBoundingClientRect();
+      window.backgroundLightning?.triggerInteractionPulse(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    };
+
+    targets.forEach((element) => {
+      const kind = element.matches('.track-card') ? 'track' : element.matches('.timeline-item') ? 'timeline' : 'register';
+      element.addEventListener('pointerenter', (event) => {
+        if (event.pointerType !== 'mouse' || !pointerPreference.matches) return;
+        activeTargets.set(element, kind);
+        syncTarget();
+      });
+      element.addEventListener('pointerleave', (event) => {
+        if (event.pointerType !== 'mouse') return;
+        activeTargets.delete(element);
+        syncTarget();
+      });
+    });
+  }
+
+  initGlobalClickImpact() {
+    document.addEventListener('click', (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      const strong = Boolean(target?.closest('[data-open-modal="register"], .btn-primary, [type="submit"], [data-impact="strong"]'));
+      const strength = strong ? 1.65 : 1;
+
+      window.backgroundLightning?.triggerClickImpact(event.clientX, event.clientY, strong);
+      document.dispatchEvent(new CustomEvent('hammer:impact', { detail: { strength } }));
     });
   }
 }
