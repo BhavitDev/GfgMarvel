@@ -40,8 +40,8 @@ class MultiverseUI {
         main.style.setProperty('--pointer-x', `${latestPointer.x}px`);
         main.style.setProperty('--pointer-y', `${latestPointer.y}px`);
         main.classList.add('pointer-active');
-        window.backgroundLightning?.setPointer(latestPointer.x, latestPointer.y);
-        window.hammerScene?.setPointer(latestPointer.x, latestPointer.y);
+        window.backgroundLightning?.setPointer?.(latestPointer.x, latestPointer.y);
+        window.hammerScene?.setPointer?.(latestPointer.x, latestPointer.y);
       });
     }, { passive: true });
   }

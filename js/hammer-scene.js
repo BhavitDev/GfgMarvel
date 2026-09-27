@@ -1,4 +1,4 @@
-const HAMMER_MODEL_URL = new URL('../mjolnir_thors_hammer.glb', document.currentScript?.src || window.location.href).href;
+const HAMMER_MODEL_URL = new URL('../mjolnir_thors_hammer.optimized.glb', document.currentScript?.src || window.location.href).href;
 
 class FloatingHammerScene {
   constructor(canvas) {
@@ -97,6 +97,7 @@ class FloatingHammerScene {
       if (active) this.hoverTarget = { element, kind };
       else if (this.hoverTarget?.element === element) this.hoverTarget = null;
     });
+    this.loadModel();
     this.syncVisibility();
   }
 
